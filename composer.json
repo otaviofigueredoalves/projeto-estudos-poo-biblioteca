@@ -1,0 +1,15 @@
+{
+    "name": "app/biblioteca-poo",
+    "autoload": {
+        "psr-4": {
+            "App\\BibliotecaPoo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "otaviofgalves",
+            "email": "117609558+otaviofigueredoalves@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}
