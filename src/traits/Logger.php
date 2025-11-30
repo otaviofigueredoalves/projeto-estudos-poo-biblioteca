@@ -3,9 +3,9 @@ namespace App\BibliotecaPoo\traits;
 
 trait Logger
 {
-    protected function log($message)
+    protected static function log($message)
     {
-        $classe = get_class($this);
+        $classe = static::class;
         echo "[$classe - LOG]: $message <br>";
     }
 }

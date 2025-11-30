@@ -3,6 +3,7 @@
 namespace App\BibliotecaPoo;
 
 use App\BibliotecaPoo\traits\Logger;
+use Exception;
 
 class Estante
 {
@@ -33,17 +34,23 @@ class Estante
 
     public function buscarLivroPorTitulo(string $titulo) : ?Array
     {
-        $livrosListados = [];
-        foreach($this->livros as $livro){
-            if(str_contains(strtolower($livro->getTitulo()), strtolower($titulo))){
-                $livrosListados[] = $livro;
+        try{
+            $livrosListados = [];
+            foreach($this->livros as $livro){
+                if(str_contains(strtolower($livro->getTitulo()), strtolower($titulo))){
+                    $livrosListados[] = $livro;
+                }
             }
-        }
-        if(empty($livrosListados)){
-            throw new \Exception("NENHUM LIVRO ENCONTRADO!");
+            if(empty($livrosListados)){
+                throw new \Exception("NENHUM LIVRO ENCONTRADO!");
+                return null;
+            }
+        } catch (Exception $e) {
+            $this->log("FALHA: ".$e->getMessage());
             return null;
         }
         return $livrosListados;
+        
     }
 
     public function listarLivrosDisponiveis():?Array

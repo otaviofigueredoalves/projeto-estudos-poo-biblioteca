@@ -17,7 +17,16 @@ $livro4 = new Livro("O amor não é óbvio","Elayne Baeta");
 
 // #2 ESTANTE
 $estante = new Estante();
-$estante->adicionarLivro($livro1);
+try{
+    $estante->adicionarLivro($livro1);
+    $estante->adicionarLivro($livro2);
+    $estante->adicionarLivro($livro3);
+    $estante->adicionarLivro($livro4);
+    $estante->adicionarLivro($livro5);
+} catch (Exception $e){
+    echo $e->getMessage();
+}
+echo "<hr>";
 
 // #3 ALUNO
 $aluno1 = new Aluno("Aluno 1");
@@ -30,12 +39,13 @@ $professor = new Professor("Professor 1");
 $visitante = new Visitante("Visitante 1");
 
 // #4 Bibliotecário
-$bibliotecario = new Bibliotecario();
-$bibliotecario->emprestarLivro($aluno1, $livro1, $estante);
+Bibliotecario::emprestarLivro($aluno1, $livro1, $estante);
 echo "<hr>";
-$bibliotecario->emprestarLivro($aluno2, $livro1, $estante);
-
-
+Bibliotecario::emprestarLivro($aluno2, $livro1, $estante);
+Bibliotecario::devolverLivro($aluno2, $livro1, $estante);
+// print_r($estante->listarLivrosDisponiveis());
+Bibliotecario::devolverLivro($aluno1, $livro1, $estante);
+// print_r($estante->listarLivrosDisponiveis());
 // $estante = new Estante();
 // echo "<pre>";
 // $estante->adicionarLivro($livro1);

@@ -7,15 +7,15 @@ use Exception;
 class Bibliotecario
 {
     use Logger;
-    public function emprestarLivro(Usuario $usuario, Livro $livro, Estante $estante )
+    public static function emprestarLivro(Usuario $usuario, Livro $livro, Estante $estante)
     {
         if(!$usuario->podePegarEmprestado()){
-            $this->log("NÃO PODE PEGAR EMPRESTADO");
+            self::log("NÃO PODE PEGAR EMPRESTADO");
             return false;
         }
 
         if(!$estante->buscarLivroPorTitulo($livro->getTitulo())){
-            $this->log("{$livro->getTitulo()} NÃO ESTÁ NA ESTANTE!");
+            self::log("{$livro->getTitulo()} NÃO ESTÁ NA ESTANTE!");
             return false;
         }
 
@@ -23,12 +23,25 @@ class Bibliotecario
             $livro->marcarEmprestado();
             $estante->removerLivro($livro);
             $usuario->adicionarLivroEmprestado($livro);
-            $this->log("SUCESSO: Livro '{$livro->getTitulo()}' emprestado para {$usuario->getNome()}.");
+            self::log("SUCESSO: Livro '{$livro->getTitulo()}' emprestado para {$usuario->getNome()}.");
         } catch (Exception $e){
-            $this->log("FALHA: ".$e->getMessage());
+            self::log("FALHA: ".$e->getMessage());
             return false;
         }
+    }
 
+    public static function devolverLivro(Usuario $usuario, Livro $livro, Estante $estante){
+        try{
+            if(!in_array($livro, $usuario->listarLivrosEmprestados())){
+                throw new \Exception("{$usuario->getNome()} NÃO ESTÁ COM O LIVRO!");
+            }
+            $usuario->removerLivroEmprestado($livro);
+            $estante->adicionarLivro($livro);
+            $livro->marcarDisponivel();
+            self::log("O livro {$livro->getTitulo()} foi DEVOLVIDO");
+        } catch (Exception $e){
+            self::log("FALHA: ".$e->getMessage());
+        }
         
     }
 }
