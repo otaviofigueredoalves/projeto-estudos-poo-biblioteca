@@ -1,5 +1,5 @@
 <?php
-namespace App\BibliotecaPoo;
+namespace App\BibliotecaPoo\Entidades;
 use App\BibliotecaPoo\traits\Logger;
 
 abstract class Usuario
