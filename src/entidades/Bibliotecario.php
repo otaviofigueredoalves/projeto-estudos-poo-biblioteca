@@ -1,13 +1,15 @@
 <?php
-namespace App\BibliotecaPoo;
+namespace App\BibliotecaPoo\Entidades;
 
 use App\BibliotecaPoo\traits\Logger;
+use App\BibliotecaPoo\repositories\EstanteRepository;
+
 use Exception;
 
 class Bibliotecario
 {
     use Logger;
-    public static function emprestarLivro(Usuario $usuario, Livro $livro, Estante $estante)
+    public static function emprestarLivro(Usuario $usuario, Livro $livro, EstanteRepository $estante)
     {
         if(!$usuario->podePegarEmprestado()){
             self::log("NÃO PODE PEGAR EMPRESTADO");
@@ -30,7 +32,7 @@ class Bibliotecario
         }
     }
 
-    public static function devolverLivro(Usuario $usuario, Livro $livro, Estante $estante){
+    public static function devolverLivro(Usuario $usuario, Livro $livro, EstanteRepository $estante){
         try{
             if(!in_array($livro, $usuario->listarLivrosEmprestados())){
                 throw new \Exception("{$usuario->getNome()} NÃO ESTÁ COM O LIVRO!");

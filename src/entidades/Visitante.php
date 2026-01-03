@@ -1,5 +1,5 @@
 <?php
-namespace App\BibliotecaPoo;
+namespace App\BibliotecaPoo\Entidades;
 
 class Visitante extends Usuario
 {

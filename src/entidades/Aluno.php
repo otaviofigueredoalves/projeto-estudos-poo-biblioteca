@@ -1,9 +1,10 @@
 <?php
-namespace App\BibliotecaPoo;
 
-class Professor extends Usuario
+namespace App\BibliotecaPoo\Entidades;
+
+class Aluno extends Usuario
 {
-     private const MAX_LIVROS_EMPRESTADOS = 3;
+    private const MAX_LIVROS_EMPRESTADOS = 1;
     
     public function podePegarEmprestado(): bool
     {
@@ -17,10 +18,10 @@ class Professor extends Usuario
         }
 
         if($status){
-            $this->log("O Professor {$this->getNome()} pode pegar $qtdTotal livro". $concat ."!");
+            $this->log("O Aluno {$this->getNome()} pode pegar $qtdTotal livro". $concat ."!");
             return $status;
         }
-        $this->log("O Professor {$this->getNome()} NÃO pode mais pegar livros. Limite máximo: ".self::MAX_LIVROS_EMPRESTADOS);
+        $this->log("O Aluno {$this->getNome()} NÃO pode mais pegar livros. Limite máximo: ".self::MAX_LIVROS_EMPRESTADOS);
         return $status;
 
 

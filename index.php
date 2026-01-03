@@ -1,82 +1,53 @@
 <?php
+ini_set('display_errors', 1);
 require_once 'vendor/autoload.php';
 
-use \App\BibliotecaPoo\Livro;
-use \App\BibliotecaPoo\Estante;
-use \App\BibliotecaPoo\Aluno;
-use \App\BibliotecaPoo\Professor;
-use \App\BibliotecaPoo\Visitante;
-use \App\BibliotecaPoo\Bibliotecario;
+use \App\BibliotecaPoo\entidades\Livro;
+use \App\BibliotecaPoo\repositories\EstanteRepository;
+use \App\BibliotecaPoo\Entidades\Aluno;
+use \App\BibliotecaPoo\Entidades\Professor;
+use \App\BibliotecaPoo\Entidades\Visitante;
+use \App\BibliotecaPoo\Entidades\Bibliotecario;
+use \App\BibliotecaPoo\db\Connection;
+$pdo = Connection::startConnection();
 
 // #1 LIVRO
-$livro1 = new Livro("Metamorfose","Franz Kafka");
-$livro5 = new Livro("A origem das espécies","Charles Darwin");
-$livro2 = new Livro("1984","George Orwell");
-$livro3 = new Livro("Dom Casmurro","Machado de Assis");
-$livro4 = new Livro("O amor não é óbvio","Elayne Baeta");
+try{
+    $livro1 = new Livro('A Metamorfose',['Franz Kafka','Elayne Baeta']);
+    $livro2 = new Livro('IT A coisa',['Stephen King']);
+} catch (Exception $e){
+    echo "Erro: ". $e->getMessage();
+}
 
 // #2 ESTANTE
-$estante = new Estante();
 try{
-    $estante->adicionarLivro($livro1);
-    $estante->adicionarLivro($livro2);
-    $estante->adicionarLivro($livro3);
-    $estante->adicionarLivro($livro4);
-    $estante->adicionarLivro($livro5);
-} catch (Exception $e){
-    echo $e->getMessage();
+    $estante = new EstanteRepository($pdo);
+    // $estante->adicionarLivro($livro2);
+    // $resultado = $estante->buscarLivroPorTitulo('IT');
+    // var_dump($resultado);
+
+    // $estante->atualizarNomeLivro($livro1, 'Coisas óbvias sobre o amor');
+    // $livros = $estante->listarLivrosDisponiveis();
+    // echo "<pre>";
+    // foreach ($livros as $livro){
+    //     print_r($livro->nome);
+    //     echo "<br>";
+    // }
+ 
+    // var_dump($resultado);
+    // $estante->removerLivro($livro1);
+    
+    // $estante->removerLivro($livro1);
+ 
+} catch (PDOException $e){
+    echo "ERRO GRAVE NO BANCO: ".$e->getMessage();
 }
-echo "<hr>";
 
 // #3 ALUNO
-$aluno1 = new Aluno("Aluno 1");
-$aluno2 = new Aluno("Aluno 2");
 
 // #3.1 PROFESSOR
-$professor = new Professor("Professor 1");
+
 
 // #3.2 VISITANTE
-$visitante = new Visitante("Visitante 1");
 
 // #4 Bibliotecário
-Bibliotecario::emprestarLivro($aluno1, $livro1, $estante);
-echo "<hr>";
-Bibliotecario::emprestarLivro($aluno2, $livro1, $estante);
-Bibliotecario::devolverLivro($aluno2, $livro1, $estante);
-// print_r($estante->listarLivrosDisponiveis());
-Bibliotecario::devolverLivro($aluno1, $livro1, $estante);
-// print_r($estante->listarLivrosDisponiveis());
-// $estante = new Estante();
-// echo "<pre>";
-// $estante->adicionarLivro($livro1);
-// $estante->adicionarLivro($livro2);
-// $estante->adicionarLivro($livro3);
-// $estante->adicionarLivro($livro4);
-// // $estante->removerLivro($livro4);
-
-// // var_dump($estante->buscarLivroPorTitulo("meta"));
-// // print_r( $estante->listarLivrosDisponiveis());
-// // $livro4->marcarDisponivel();
-// // print_r( $estante->listarLivrosDisponiveis());
-// // $estante->removerLivro($livro4);
-// // var_dump($estante);
-
-// // ALUNO
-// $aluno1= new Aluno("Otavio");
-// $aluno1->podePegarEmprestado();
-// $aluno1->adicionarLivroEmprestado($livro1);
-// $aluno1->podePegarEmprestado();
-
-// // PROFESSOR
-// $professor = new Professor("Wesley");
-// $professor->podePegarEmprestado();
-// $professor->adicionarLivroEmprestado($livro1);
-// $professor->podePegarEmprestado();
-// $professor->adicionarLivroEmprestado($livro1);
-// $professor->podePegarEmprestado();
-// $professor->adicionarLivroEmprestado($livro1);
-// $professor->podePegarEmprestado();
-
-// // VISITANTE
-// $visitante = new Visitante("Default");
-// $visitante->podePegarEmprestado();
