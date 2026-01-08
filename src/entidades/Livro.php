@@ -10,10 +10,10 @@ class Livro // Será o primeiro objeto a ser construído, já que todo o sistema
     public function __construct(
         private string $titulo, 
         private array $autores = [],
-        private int $id_editora = 1, 
-        private int $id_categoria = 1, 
-        private bool $disponivel = false,
+        private Editora $editora,
+        private Categoria $categoria, 
         private int $id = 0,
+        private bool $disponivel = false,
         ) 
     {}
 
@@ -56,14 +56,24 @@ class Livro // Será o primeiro objeto a ser construído, já que todo o sistema
         return $this->autores;
     }
 
-    public function getEditora(){
-
-        return $this->id_editora;
+    public function getIdEdit()
+    {
+        return $this->editora->getId();
     }
 
-    public function getCategoria()
+    public function getIdCtg()
     {
-        return $this->id_categoria;
+        return $this->categoria->getId();
+    }
+
+    public function getNomeEdit()
+    {
+        return $this->editora->getNome();
+    }
+
+    public function getNomeCtg()
+    {
+        return $this->categoria->getNome();
     }
 
     public function getId()

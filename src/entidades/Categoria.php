@@ -1,19 +1,19 @@
 <?php
 namespace App\BibliotecaPoo\entidades;
 
-class Editora
+class Categoria
 {
-    public function __construct(private int $id_editora, private string $nome)
+    public function __construct(private int $id_categoria, private string $nome)
     {}
 
+   
    public function getId()
    {
-        return $this->id_editora;
+        return $this->id_categoria;
    }
 
    public function getNome()
    {
         return $this->nome; 
    }
-
 }

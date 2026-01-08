@@ -3,27 +3,57 @@ ini_set('display_errors', 1);
 require_once 'vendor/autoload.php';
 
 use \App\BibliotecaPoo\entidades\Livro;
-use \App\BibliotecaPoo\repositories\EstanteRepository;
+use \App\BibliotecaPoo\repositories\LivroRepository;
+use \App\BibliotecaPoo\entidades\Editora;
+use \App\BibliotecaPoo\entidades\Categoria;
 use \App\BibliotecaPoo\Entidades\Aluno;
 use \App\BibliotecaPoo\Entidades\Professor;
 use \App\BibliotecaPoo\Entidades\Visitante;
 use \App\BibliotecaPoo\Entidades\Bibliotecario;
 use \App\BibliotecaPoo\db\Connection;
+
+// conexão DB
 $pdo = Connection::startConnection();
 
-// #1 LIVRO
+// #1 LIVRO - CADASTRO
 try{
-    $livro1 = new Livro('A Metamorfose',['Franz Kafka','Elayne Baeta']);
-    $livro2 = new Livro('IT A coisa',['Stephen King']);
+
+    $repository_livro = new LivroRepository($pdo);
+    $editora = $repository_livro->buscarEditora('Anto');
+    $categoria = $repository_livro->buscarCategoria('Ht');
+
+    $livro = new Livro("A metamorfose",['Franz Kafka'],$editora, $categoria);
+    // var_dump($categoria);
+    
 } catch (Exception $e){
-    echo "Erro: ". $e->getMessage();
+    echo "Erro com livro: ". $e->getMessage();
+}
+
+// Editora
+
+try {
+
+} catch (PDOException $e){
+    echo "Erro com editora: ". $e->getMessage();
+}
+
+// Categoria
+
+try {
+    $categoria = new Categoria(0,'Technologia');
+    $categoriaCadastro = new LivroRepository($pdo);
+    // $categoriaCadastro->adicionarCategoria($categoria);
+
+} catch (PDOException){
+     echo "Erro com categoria: ". $e->getMessage();
 }
 
 // #2 ESTANTE
 try{
-    $estante = new EstanteRepository($pdo);
-    // $estante->adicionarLivro($livro2);
+    $estante = new LivroRepository($pdo);
+    $estante->adicionarLivro($livro);
     // $resultado = $estante->buscarLivroPorTitulo('IT');
+    // echo "<pre>";
     // var_dump($resultado);
 
     // $estante->atualizarNomeLivro($livro1, 'Coisas óbvias sobre o amor');
@@ -35,8 +65,7 @@ try{
     // }
  
     // var_dump($resultado);
-    // $estante->removerLivro($livro1);
-    
+    // $estante->removerLivro($livro2);    
     // $estante->removerLivro($livro1);
  
 } catch (PDOException $e){
