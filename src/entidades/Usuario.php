@@ -6,29 +6,20 @@ abstract class Usuario
 {
     use Logger;
 
-    protected array $livrosEmprestados = [];
-
-    public function __construct(private string $nome){}
-
-    abstract function podePegarEmprestado():bool;
+    public function __construct(private string $nome, private int $id = 0){}
     
-    public function adicionarLivroEmprestado(Livro $livro): void
-    {
-        $this->livrosEmprestados[] = $livro;
-    }
-
-    public function removerLivroEmprestado(Livro $livro): void
-    {
-        $this->livrosEmprestados = array_filter($this->livrosEmprestados, fn($livroAtual) => $livroAtual !== $livro);
-    }
-
-    public function listarLivrosEmprestados()
-    {
-        return $this->livrosEmprestados;
-    }
-
     public function getNome()
     {
         return $this->nome;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }
