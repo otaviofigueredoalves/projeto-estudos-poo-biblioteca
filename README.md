@@ -87,7 +87,10 @@ Abaixo, detalho como transformei teoria em prática neste código, mapeando cada
 
 - composer dump-autoload
 
-4. Abra o index.php no navegador.
+4. Rode o servidor
+- php -S localhost:8000
+
+5. Abra o link e seja feliz
 
 <div align="center">
 <small>Desenvolvido para fins de estudo por <strong>[Otavio Figueredo]</strong>.</small>
