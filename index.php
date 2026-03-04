@@ -6,11 +6,12 @@ use \App\BibliotecaPoo\entidades\Livro;
 use \App\BibliotecaPoo\repositories\LivroRepository;
 use \App\BibliotecaPoo\entidades\Editora;
 use \App\BibliotecaPoo\entidades\Categoria;
-use \App\BibliotecaPoo\Entidades\Aluno;
+use \App\BibliotecaPoo\entidades\Aluno;
 use \App\BibliotecaPoo\Entidades\Professor;
 use \App\BibliotecaPoo\Entidades\Visitante;
 use \App\BibliotecaPoo\Entidades\Bibliotecario;
 use \App\BibliotecaPoo\db\Connection;
+use App\BibliotecaPoo\repositories\UserRepository;
 
 // conexão DB
 $pdo = Connection::startConnection();
@@ -18,12 +19,12 @@ $pdo = Connection::startConnection();
 // #1 LIVRO - CADASTRO
 try{
 
-    $repository_livro = new LivroRepository($pdo);
-    $editora = $repository_livro->buscarEditora('Anto');
-    $categoria = $repository_livro->buscarCategoria('Ht');
+    // $repository_livro = new LivroRepository($pdo);
+    // $editora = $repository_livro->buscarEditora('Anto');
+    // $categoria = $repository_livro->buscarCategoria('Ht');
 
-    $livro = new Livro("A metamorfose",['Franz Kafka'],$editora, $categoria);
-    // var_dump($categoria);
+    // $livro = new Livro("A metamorfose",['Franz Kafka'],$editora, $categoria);
+    // // var_dump($categoria);
     
 } catch (Exception $e){
     echo "Erro com livro: ". $e->getMessage();
@@ -51,7 +52,7 @@ try {
 // #2 ESTANTE
 try{
     $estante = new LivroRepository($pdo);
-    $estante->adicionarLivro($livro);
+    // $estante->adicionarLivro($livro);
     // $resultado = $estante->buscarLivroPorTitulo('IT');
     // echo "<pre>";
     // var_dump($resultado);
@@ -73,6 +74,10 @@ try{
 }
 
 // #3 ALUNO
+$userRepository = new UserRepository($pdo);
+$aluno1 = new Aluno("Otávio");
+$userRepository->adicionarUsuario($aluno1);
+
 
 // #3.1 PROFESSOR
 

@@ -1,29 +1,14 @@
 <?php
 
-namespace App\BibliotecaPoo\Entidades;
+namespace App\BibliotecaPoo\entidades;
 
 class Aluno extends Usuario
 {
-    private const MAX_LIVROS_EMPRESTADOS = 1;
-    
-    public function podePegarEmprestado(): bool
+    public function podePegarEmprestado($count): bool
     {
-        $qtdLivros = count($this->livrosEmprestados);
-        $qtdTotal = self::MAX_LIVROS_EMPRESTADOS - $qtdLivros;
-        $status = $qtdLivros < self::MAX_LIVROS_EMPRESTADOS;
-        $concat = "";
-
-        if($qtdTotal > 1){
-            $concat = "s";
+        if($count > 2){
+            return false;
         }
-
-        if($status){
-            $this->log("O Aluno {$this->getNome()} pode pegar $qtdTotal livro". $concat ."!");
-            return $status;
-        }
-        $this->log("O Aluno {$this->getNome()} NÃO pode mais pegar livros. Limite máximo: ".self::MAX_LIVROS_EMPRESTADOS);
-        return $status;
-
-
+        return true;
     }
 }

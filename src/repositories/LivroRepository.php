@@ -13,7 +13,6 @@ namespace App\BibliotecaPoo\repositories;
 
 use App\BibliotecaPoo\traits\Logger;
 use App\BibliotecaPoo\Entidades\Livro;
-use App\BibliotecaPoo\entidades\Editora;
 use App\BibliotecaPoo\db\connection;
 use App\BibliotecaPoo\entidades\Categoria;
 use ArrayAccess;
@@ -24,8 +23,6 @@ use PDOException;
 
 class LivroRepository
 {
-
-
     public function __construct(private PDO $pdo) {}
 
     use Logger;
@@ -45,7 +42,7 @@ class LivroRepository
 
             $id_editora = $livro->getIdEdit();
             $id_categoria = $livro->getIdCtg();
-
+            
             $stmt = $this->pdo->prepare($query_insert);
             $stmt->bindParam(':id_editora', $id_editora);
             $stmt->bindParam(':id_categoria', $id_categoria);
@@ -98,101 +95,6 @@ class LivroRepository
             $this->log($e->getMessage());
             $this->pdo->rollBack();
         }
-    }
-
-    public function adicionarEditora(Editora $editora)
-    {
-        try{
-            $this->pdo->beginTransaction();
-            $query = "INSERT INTO Editora (nome) VALUES (:nome)";
-            $stmt = $this->pdo->prepare($query);
-            $stmt->bindValue(':nome', $editora->getNome());
-            
-            if($stmt->execute()){
-                $this->log("Query rodou!");
-                $this->log("Editora cadastrada com sucesso!");
-            } 
-
-            $this->pdo->commit();
-        } catch (PDOException $e){
-            echo "Erro ao cadastrar a editora";
-            $this->log($e->getMessage());
-        }
-    }
-
-    public function buscarEditora(string $titulo) :?Object
-    {
-        $editora = '';
-        $titulo = "%$titulo%";
-        $query = "SELECT * FROM Editora WHERE nome LIKE :nome";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':nome',$titulo);
-
-        if($stmt->execute()){
-            $this->log("REALIZANDO BUSCA");
-            $editora = $stmt->fetch(PDO::FETCH_OBJ);
-            // var_dump($editora);
-            if(!empty($editora)){
-                // var_dump($editora);
-                $editora = new Editora($editora->id_editora, $editora->nome);
-                $this->log("Editora encontrada!");
-                return $editora;
-                // print_r($editora);
-            } else {
-                throw new PDOException("Nenhuma editora encontrada!");
-            }
-
-            return null;
-        } else {
-            throw new PDOException("Erro na busca!");
-        }
-    }
-
-    public function buscarCategoria(string $titulo) :?Object
-    {
-        $categoria = '';
-        $titulo = "%$titulo%";
-        $query = "SELECT * FROM Categoria WHERE nome LIKE :nome";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':nome',$titulo);
-
-        if($stmt->execute()){
-            $this->log("REALIZANDO BUSCA");
-            $categoria = $stmt->fetch(PDO::FETCH_OBJ);
-            if(!empty($categoria)){
-                // var_dump($editora);
-                $categoria = new Categoria($categoria->id_categoria, $categoria->nome);
-                $this->log("Categoria encontrada!");
-                return $categoria;
-            } else {
-                throw new PDOException("Nenhuma editora encontrada!");
-            }
-
-            return null;
-        } else {
-            throw new PDOException("Erro na busca!");
-        }
-    }
-
-    public function adicionarCategoria(Categoria $categoria)
-    {
-        try{
-            $this->pdo->beginTransaction();
-            $query = "INSERT INTO Categoria (nome) VALUES (:nome)";
-            $stmt = $this->pdo->prepare($query);
-            $stmt->bindValue(':nome', $categoria->getNome());
-            
-            if($stmt->execute()){
-                $this->log("Query rodou!");
-                $this->log("Categoria cadastrada com sucesso!");
-            } 
-
-            $this->pdo->commit();
-        } catch (PDOException $e){
-            echo "Erro ao cadastrar a categoria";
-            $this->log($e->getMessage());
-        }
-        
     }
 
     public function buscarLivroPorTitulo(string $titulo): ?Object
