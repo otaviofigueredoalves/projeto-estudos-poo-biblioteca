@@ -11,6 +11,8 @@ use \App\BibliotecaPoo\Entidades\Professor;
 use \App\BibliotecaPoo\Entidades\Visitante;
 use \App\BibliotecaPoo\Entidades\Bibliotecario;
 use \App\BibliotecaPoo\db\Connection;
+use App\BibliotecaPoo\repositories\EditoraRepository;
+use App\BibliotecaPoo\repositories\CategoriaRepository;
 use App\BibliotecaPoo\repositories\UserRepository;
 
 // conexão DB
@@ -20,10 +22,13 @@ $pdo = Connection::startConnection();
 try{
 
     // $repository_livro = new LivroRepository($pdo);
-    // $editora = $repository_livro->buscarEditora('Anto');
-    // $categoria = $repository_livro->buscarCategoria('Ht');
+    // $repository_editora = new EditoraRepository($pdo);
+    // $repository_categoria = new CategoriaRepository($pdo);
 
-    // $livro = new Livro("A metamorfose",['Franz Kafka'],$editora, $categoria);
+    // $editora = $repository_editora->buscarEditora('Anto');
+    // $categoria = $repository_categoria->buscarCategoria('HTML');
+    
+    // $livro = new Livro("Fly to the moon",['Frank Sinatra'],$editora, $categoria);
     // // var_dump($categoria);
     
 } catch (Exception $e){
@@ -73,10 +78,17 @@ try{
     echo "ERRO GRAVE NO BANCO: ".$e->getMessage();
 }
 
+// $aluno1 = new Aluno("Ketley");
+// $aluno2 = new Aluno("Ketley Linhares");
 // #3 ALUNO
 $userRepository = new UserRepository($pdo);
-$aluno1 = new Aluno("Otávio");
-$userRepository->adicionarUsuario($aluno1);
+// $userRepository->adicionarUsuario($aluno1);
+// $userRepository->adicionarUsuario($aluno2);
+$lista = $userRepository->buscarUsuarioPorNome('Ketley','aluno');
+echo "<pre>";
+var_dump($lista);
+// $aluno1 = new Aluno("Otávio");
+// $userRepository->adicionarUsuario($aluno1);
 
 
 // #3.1 PROFESSOR

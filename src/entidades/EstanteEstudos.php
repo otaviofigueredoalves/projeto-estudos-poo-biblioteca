@@ -2,6 +2,7 @@
 namespace App\BibliotecaPoo;
 
 use App\BibliotecaPoo\traits\Logger; // pra usar a trait preciso importar o namespace onde ela está
+use App\BibliotecaPoo\Entidades\Livro;
 
 class EstanteEstudos
 {
