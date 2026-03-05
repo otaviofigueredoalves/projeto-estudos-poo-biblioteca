@@ -34,8 +34,6 @@ class UserRepository
             )";
          }
 
-
-
          $this->pdo->beginTransaction();
          $stmt = $this->pdo->prepare($query);
          $stmt->bindValue(':nome', $user->getNome());
@@ -43,7 +41,6 @@ class UserRepository
             $this->log("Query executada");
          } else {
             throw new PDOException("Erro ao executar a query");
-            $this->pdo->rollBack();
          }
          if ($this->pdo->commit()) {
             $this->log("O usuario {$user->getNome()} foi cadastrado");
@@ -56,10 +53,52 @@ class UserRepository
       }
    }
 
-   // public function buscarUsuarioPorNome(): ?Object
-   //  {
-   //       // esse método é peculiar pois no momento está recebendo uma string, mas, pensei o seguinte. Se eu for manter dessa forma, ele não vai saber se estou procurando um aluno ou um professor e aí ou eu teria que mudar o parâmetro para receber uma instancia do tipo usuario. Ou, eu crio dois métodos que fazem a mesma coisa e só mudam a query. A terceira opção é passar um novo parâmetro que recebe ou um objeto ou um cargo. Mas esse cargo seria via string? Não parece muito certo, e se for booleano, se limitaria a apenas duas opções
-   //  }
+   public function buscarUsuarioPorNome(string $user, string $cargo): ?Array
+    {
+          try {
+            $user = "%{$user}%";
+            /** Aqui estava com dúvida na sintaxe, pra interligar livro com autor a gente usa a tabela livro_autor, ok, entendi isso, mas e a sintaxe da query? Manter em mente: Qualquer condicional só vem depois dos JOINS
+             * 
+             */
+            if($cargo == 'professor'){
+               $query = "SELECT * FROM Professor WHERE Nome LIKE :nome";
+            } else if ($cargo == 'aluno'){
+               $query = "SELECT * FROM Aluno WHERE Nome LIKE :nome";
+            } else {
+               throw new Exception("CARGO INVÁLIDO!");
+            }
+
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':nome', $user);
+            if ($stmt->execute()) {
+                $this->log("Realizando busca");
+                $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                // var_dump($data[0]['id_livro']);
+
+                if(!empty($data)){
+                  $users = [];
+                  if($cargo == 'professor'){
+                     foreach ($data as $user){
+                        $users[] = new Professor($user['nome'],$user['id_professor']);
+                     }
+                  } else if($cargo == 'aluno'){
+                     foreach ($data as $user){
+                        $users[] = new Aluno($user['nome'],$user['id_aluno']);
+                     }
+                  }
+                  
+                  return $users;
+                }
+               
+            } else {
+                throw new Exception("Não foi possível conectar ao banco");
+            }
+        } catch (Exception $e) {
+            $this->log("FALHA: " . $e->getMessage());
+            return null;
+        }
+        return null;
+    }
 }
 
 
