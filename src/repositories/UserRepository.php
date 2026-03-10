@@ -88,6 +88,8 @@ class UserRepository
                   }
                   
                   return $users;
+                } else {
+                  throw new Exception("Usuário não encontrado!");
                 }
                
             } else {
@@ -98,6 +100,69 @@ class UserRepository
             return null;
         }
         return null;
+    }
+
+    public function removerUsuario(string $user, string $cargo)
+    {
+        try{
+           $this->pdo->beginTransaction();
+            $usuario = $this->buscarUsuarioPorNome($user, $cargo);
+            if(!empty($usuario)){
+               $usuario_nome = $usuario[0]->getNome();
+            } else {
+               throw new Exception("USUÁRIO NÃO EXISTE NO BANCO!");
+            }
+            
+            echo '<pre>';
+            print_r($usuario_nome);
+
+            if($cargo == 'professor'){
+               $query = "DELETE FROM Professor WHERE nome = :nome";
+            } else if($cargo == 'aluno'){
+               $query = "DELETE FROM Aluno WHERE nome = :nome";
+            }
+
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(":nome",$usuario_nome);
+            if($stmt->execute()){
+               $this->log("USUÁRIO $usuario_nome DELETADO!");
+               $this->pdo->commit();
+            } else {
+               throw new PDOException("Erro ao executar a query");
+            }
+
+        } catch (Exception $e){
+            $this->log("FALHA: ". $e->getMessage());
+            $this->pdo->rollBack();
+        }
+    }
+
+     public function atualizarNomeUsuario(Usuario $user, string $nome)
+    {
+        $this->pdo->beginTransaction();
+        $user_id = $user->getId();
+        if($user instanceof Aluno){
+            $query = "UPDATE Aluno SET 
+                  nome = :nome
+                  WHERE id_aluno = :id";
+        } else if($user instanceof Professor){
+            $query = "UPDATE Professor SET 
+                  nome = :nome
+                  WHERE id_professor = :id";
+        }
+        
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':nome', $nome);
+        $stmt->bindValue(':id', $user_id);
+
+        if ($stmt->execute()) {
+            $this->log("Aluno atualizado!");
+            $this->pdo->commit();
+        } else {
+            throw new Exception("Erro ao executar query no banco");
+        }
+       
     }
 }
 

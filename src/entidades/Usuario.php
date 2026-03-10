@@ -12,7 +12,6 @@ abstract class Usuario
     {
         return $this->nome;
     }
-
     public function getId()
     {
         return $this->id;

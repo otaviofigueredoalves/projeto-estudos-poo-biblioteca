@@ -78,16 +78,21 @@ try{
     echo "ERRO GRAVE NO BANCO: ".$e->getMessage();
 }
 
-// $aluno1 = new Aluno("Ketley");
 // $aluno2 = new Aluno("Ketley Linhares");
 // #3 ALUNO
 $userRepository = new UserRepository($pdo);
+$aluno1 = $userRepository->buscarUsuarioPorNome('aluno','aluno');
+$aluno1 = $aluno1[0];
+// echo '<pre>';
+// print_r($aluno1);
 // $userRepository->adicionarUsuario($aluno1);
 // $userRepository->adicionarUsuario($aluno2);
-$lista = $userRepository->buscarUsuarioPorNome('Ketley','aluno');
-echo "<pre>";
-var_dump($lista);
+// $lista = $userRepository->buscarUsuarioPorNome('Ketley Linhares','aluno');
+// echo '<pre>';
+// print_r($lista);
+// $userRepository->removerUsuario('Ketley Linhares', 'aluno');
 // $aluno1 = new Aluno("Otávio");
+$userRepository->atualizarNomeUsuario($aluno1, 'Ketley L');
 // $userRepository->adicionarUsuario($aluno1);
 
 
