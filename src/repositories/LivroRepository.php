@@ -15,9 +15,7 @@ use App\BibliotecaPoo\traits\Logger;
 use App\BibliotecaPoo\Entidades\Livro;
 use App\BibliotecaPoo\db\connection;
 use App\BibliotecaPoo\entidades\Categoria;
-use ArrayAccess;
 use PDO;
-
 use Exception;
 use PDOException;
 
